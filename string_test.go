@@ -15,6 +15,15 @@ func TestString_MinMax(t *testing.T) {
 	assert.Error(t, s.Validate("12345"))
 }
 
+func TestString_Valids(t *testing.T) {
+	s := goi.String("test").Required().Valid("foo", "bar")
+
+	assert.NoError(t, s.Validate("foo"))
+	assert.NoError(t, s.Validate("bar"))
+	assert.Error(t, s.Validate("test"))
+	assert.Error(t, s.Validate("12345"))
+}
+
 func TestString_Regex(t *testing.T) {
 	s := goi.String("test").Required().Regex("^foo$")
 

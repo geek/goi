@@ -3,7 +3,7 @@ package goi
 import "fmt"
 
 type number interface {
-	int64 | int32 | uint64 | uint32
+	int64 | int32 | uint64 | uint32 | float32 | float64
 }
 
 type num[T number] struct {
@@ -12,13 +12,23 @@ type num[T number] struct {
 	max *T
 }
 
+func Number[T number](name string) num[T] {
+	return num[T]{Any: &Any[T]{name: name}}
+}
+
 func (n num[T]) Required() num[T] {
 	n.isRequired = true
 	return n
 }
 
-func Number[T number](name string) num[T] {
-	return num[T]{Any: &Any[T]{name, false}}
+func (n num[T]) Valid(valids ...T) num[T] {
+	n.valids = valids
+	return n
+}
+
+func (n num[T]) Invalid(invalids ...T) num[T] {
+	n.invalids = invalids
+	return n
 }
 
 func (n num[T]) Min(m T) num[T] {

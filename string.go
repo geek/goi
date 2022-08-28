@@ -13,11 +13,21 @@ type str struct {
 }
 
 func String(name string) str {
-	return str{Any: &Any[string]{name, false}}
+	return str{Any: &Any[string]{name: name}}
 }
 
 func (s str) Required() str {
 	s.isRequired = true
+	return s
+}
+
+func (s str) Valid(valids ...string) str {
+	s.valids = valids
+	return s
+}
+
+func (s str) Invalid(invalids ...string) str {
+	s.invalids = invalids
 	return s
 }
 
