@@ -29,16 +29,19 @@ func New[T comparable](name string) Any[T] {
 	return Any[T]{name: name}
 }
 
+// Marks the field as requiring a non-zero value
 func (a Any[T]) Required() Any[T] {
 	a.isRequired = true
 	return a
 }
 
+// Valid only allows values that match the provided valids args
 func (a Any[T]) Valid(valids ...T) Any[T] {
 	a.valids = valids
 	return a
 }
 
+// Invalid only prevents values that match the provided invalids args
 func (a Any[T]) Invalid(invalids ...T) Any[T] {
 	a.invalids = invalids
 	return a

@@ -16,26 +16,34 @@ func Number[T number](name string) num[T] {
 	return num[T]{Any: &Any[T]{name: name}}
 }
 
+// Marks the field as requiring a non-zero value
 func (n num[T]) Required() num[T] {
-	n.isRequired = true
+	a := n.Any.Required()
+	n.Any = &a
 	return n
 }
 
+// Valid only allows values that match the provided valids args
 func (n num[T]) Valid(valids ...T) num[T] {
-	n.valids = valids
+	a := n.Any.Valid(valids...)
+	n.Any = &a
 	return n
 }
 
+// Invalid only prevents values that match the provided invalids args
 func (n num[T]) Invalid(invalids ...T) num[T] {
-	n.invalids = invalids
+	a := n.Any.Invalid(invalids...)
+	n.Any = &a
 	return n
 }
 
+// Min specifies the minimum value allowed
 func (n num[T]) Min(m T) num[T] {
 	n.min = &m
 	return n
 }
 
+// Max specifies the maximum value allowed
 func (n num[T]) Max(m T) num[T] {
 	if n.min != nil && m < *n.min {
 		panic("max cannot be less than min")

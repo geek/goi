@@ -16,26 +16,34 @@ func String(name string) str {
 	return str{Any: &Any[string]{name: name}}
 }
 
+// Marks the field as requiring a empty string value
 func (s str) Required() str {
-	s.isRequired = true
+	a := s.Any.Required()
+	s.Any = &a
 	return s
 }
 
+// Valid only allows values that match the provided valids args
 func (s str) Valid(valids ...string) str {
-	s.valids = valids
+	a := s.Any.Valid(valids...)
+	s.Any = &a
 	return s
 }
 
+// Invalid only prevents values that match the provided invalids args
 func (s str) Invalid(invalids ...string) str {
-	s.invalids = invalids
+	a := s.Any.Invalid(invalids...)
+	s.Any = &a
 	return s
 }
 
+// Min specifies the minimum length allowed
 func (s str) Min(m uint64) str {
 	s.min = &m
 	return s
 }
 
+// Max specifies the maximum length allowed
 func (s str) Max(m uint64) str {
 	if s.min != nil && m < *s.min {
 		panic("max cannot be less than min")
