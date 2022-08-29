@@ -4,7 +4,7 @@ check:
 	./bin/golangci-lint run $(GOBUILDPKGS) --timeout 5m
 
 doc:
-	gomarkdoc --output api.md .
+	gomarkdoc --output api.md -u .
 
 fmt:
 	gofumpt -w $(GOBUILDPKGS)

@@ -8,6 +8,7 @@ import "github.com/geek/goi"
 
 ## Index
 
+- [func isZero[T comparable](v T) bool](<#func-iszero>)
 - [type Any](<#type-any>)
   - [func New[T comparable](name string) Any[T]](<#func-new>)
   - [func (a Any[T]) Invalid(invalids ...T) Any[T]](<#func-anyt-invalid>)
@@ -17,13 +18,40 @@ import "github.com/geek/goi"
 - [type ValidationError](<#type-validationerror>)
   - [func NewValidationError(field, format string, a ...any) ValidationError](<#func-newvalidationerror>)
   - [func (v ValidationError) Error() string](<#func-validationerror-error>)
+- [type num](<#type-num>)
+  - [func Number[T number](name string) num[T]](<#func-number>)
+  - [func (n num[T]) Invalid(invalids ...T) num[T]](<#func-numt-invalid>)
+  - [func (n num[T]) Max(m T) num[T]](<#func-numt-max>)
+  - [func (n num[T]) Min(m T) num[T]](<#func-numt-min>)
+  - [func (n num[T]) Required() num[T]](<#func-numt-required>)
+  - [func (n num[T]) Valid(valids ...T) num[T]](<#func-numt-valid>)
+  - [func (n num[T]) Validate(input T) error](<#func-numt-validate>)
+- [type number](<#type-number>)
+- [type str](<#type-str>)
+  - [func String(name string) str](<#func-string>)
+  - [func (s str) Invalid(invalids ...string) str](<#func-str-invalid>)
+  - [func (s str) Max(m uint64) str](<#func-str-max>)
+  - [func (s str) Min(m uint64) str](<#func-str-min>)
+  - [func (s str) Regex(regex string) str](<#func-str-regex>)
+  - [func (s str) Required() str](<#func-str-required>)
+  - [func (s str) Valid(valids ...string) str](<#func-str-valid>)
+  - [func (s str) Validate(input string) error](<#func-str-validate>)
 
+
+## func isZero
+
+```go
+func isZero[T comparable](v T) bool
+```
 
 ## type Any
 
 ```go
 type Any[T comparable] struct {
-    // contains filtered or unexported fields
+    name       string
+    isRequired bool
+    valids     []T
+    invalids   []T
 }
 ```
 
@@ -82,6 +110,145 @@ func NewValidationError(field, format string, a ...any) ValidationError
 
 ```go
 func (v ValidationError) Error() string
+```
+
+## type num
+
+```go
+type num[T number] struct {
+    *Any[T]
+    min *T
+    max *T
+}
+```
+
+### func Number
+
+```go
+func Number[T number](name string) num[T]
+```
+
+### func \(num\[T\]\) Invalid
+
+```go
+func (n num[T]) Invalid(invalids ...T) num[T]
+```
+
+Invalid only prevents values that match the provided invalids args
+
+### func \(num\[T\]\) Max
+
+```go
+func (n num[T]) Max(m T) num[T]
+```
+
+Max specifies the maximum value allowed
+
+### func \(num\[T\]\) Min
+
+```go
+func (n num[T]) Min(m T) num[T]
+```
+
+Min specifies the minimum value allowed
+
+### func \(num\[T\]\) Required
+
+```go
+func (n num[T]) Required() num[T]
+```
+
+Marks the field as requiring a non\-zero value
+
+### func \(num\[T\]\) Valid
+
+```go
+func (n num[T]) Valid(valids ...T) num[T]
+```
+
+Valid only allows values that match the provided valids args
+
+### func \(num\[T\]\) Validate
+
+```go
+func (n num[T]) Validate(input T) error
+```
+
+## type number
+
+```go
+type number interface {
+    int64 | int32 | uint64 | uint32 | float32 | float64
+}
+```
+
+## type str
+
+```go
+type str struct {
+    *Any[string]
+    min   *uint64
+    max   *uint64
+    regex *regexp.Regexp
+}
+```
+
+### func String
+
+```go
+func String(name string) str
+```
+
+### func \(str\) Invalid
+
+```go
+func (s str) Invalid(invalids ...string) str
+```
+
+Invalid only prevents values that match the provided invalids args
+
+### func \(str\) Max
+
+```go
+func (s str) Max(m uint64) str
+```
+
+Max specifies the maximum length allowed
+
+### func \(str\) Min
+
+```go
+func (s str) Min(m uint64) str
+```
+
+Min specifies the minimum length allowed
+
+### func \(str\) Regex
+
+```go
+func (s str) Regex(regex string) str
+```
+
+### func \(str\) Required
+
+```go
+func (s str) Required() str
+```
+
+Marks the field as requiring a empty string value
+
+### func \(str\) Valid
+
+```go
+func (s str) Valid(valids ...string) str
+```
+
+Valid only allows values that match the provided valids args
+
+### func \(str\) Validate
+
+```go
+func (s str) Validate(input string) error
 ```
 
 
