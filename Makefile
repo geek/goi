@@ -1,16 +1,16 @@
-GOBUILDPKGS := ./
+PKGS := ./
 
 check:
-	./bin/golangci-lint run $(GOBUILDPKGS) --timeout 5m
+	./bin/golangci-lint run $(PKGS) --timeout 5m
 
 doc:
 	gomarkdoc --output api.md -u .
 
 fmt:
-	gofumpt -w $(GOBUILDPKGS)
+	gofumpt -w $(PKGS)
 
 test: check
-	gotestsum --format short-verbose -- -race -v  $(GOBUILDPKGS)
+	gotestsum --format short-verbose -- -race -v  $(PKGS)
 
 tools:
 	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s latest
