@@ -3,6 +3,7 @@ package goi
 import (
 	"fmt"
 	"regexp"
+	"unicode/utf8"
 )
 
 type str struct {
@@ -63,11 +64,12 @@ func (s str) Validate(input string) error {
 		return err
 	}
 
-	if s.max != nil && len(input) > int(*s.max) {
+	l := utf8.RuneCountInString(input)
+	if s.max != nil && l > int(*s.max) {
 		return fmt.Errorf("%s cannot be greater in length than %d", s.name, s.max)
 	}
 
-	if s.min != nil && len(input) < int(*s.min) {
+	if s.min != nil && l < int(*s.min) {
 		return NewValidationError(s.name, "%s should be at least %d in length", s.name, s.min)
 	}
 

@@ -15,6 +15,13 @@ func TestString_MinMax(t *testing.T) {
 	assert.Error(t, s.Validate("12345"))
 }
 
+func TestString_MinMaxUnicode(t *testing.T) {
+	s := goi.String("test").Required().Min(1).Max(4)
+
+	assert.NoError(t, s.Validate("\xc8\xbe"))
+	assert.Error(t, s.Validate("\xbd\xb2\x3d\xbc\x20\xe2"))
+}
+
 func TestString_Valids(t *testing.T) {
 	s := goi.String("test").Required().Valid("foo", "bar")
 
